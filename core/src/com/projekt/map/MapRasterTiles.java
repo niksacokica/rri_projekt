@@ -1,4 +1,4 @@
-package com.projekt.utils;
+package com.projekt.map;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;

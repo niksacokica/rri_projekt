@@ -20,12 +20,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import com.projekt.utils.Geolocation;
-import com.projekt.utils.MapRasterTiles;
-import com.projekt.utils.PixelPosition;
-import com.projekt.utils.ZoomXY;
+import com.projekt.api.BikeStop;
+import com.projekt.api.BusStop;
+import com.projekt.api.FetchApi;
+import com.projekt.api.TrainStop;
+import com.projekt.map.Geolocation;
+import com.projekt.map.MapRasterTiles;
+import com.projekt.map.PixelPosition;
+import com.projekt.map.ZoomXY;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Projekt extends ApplicationAdapter implements GestureDetector.GestureListener {
     private ShapeRenderer shapeRenderer;
@@ -44,6 +50,10 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
     private final Geolocation MARKER_GEOLOCATION = new Geolocation(46.559070, 15.638100);
     private final int WIDTH = MapRasterTiles.TILE_SIZE * NUM_TILES;
     private final int HEIGHT = MapRasterTiles.TILE_SIZE * NUM_TILES;
+
+    public List<BikeStop> bikeStops = new ArrayList<>();
+    public List<BusStop> busStops = new ArrayList<>();
+    public List<TrainStop> trainStops = new ArrayList<>();
 
     @Override
     public void create() {
@@ -84,6 +94,11 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
         layers.add(layer);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        FetchApi fetch = new FetchApi();
+        fetch.fetchBikes(this);
+        fetch.fetchBuses(this);
+        fetch.fetchTrains(this);
     }
 
     @Override

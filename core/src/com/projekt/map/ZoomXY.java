@@ -1,4 +1,4 @@
-package com.projekt.utils;
+package com.projekt.map;
 
 public class ZoomXY {
     public int zoom;
