@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -28,6 +29,8 @@ import com.projekt.map.Geolocation;
 import com.projekt.map.MapRasterTiles;
 import com.projekt.map.PixelPosition;
 import com.projekt.map.ZoomXY;
+import com.projekt.utils.Details;
+import com.projekt.utils.Filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +57,10 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
     public List<BikeStop> bikeStops = new ArrayList<>();
     public List<BusStop> busStops = new ArrayList<>();
     public List<TrainStop> trainStops = new ArrayList<>();
+
+    private SpriteBatch batch;
+    private Filter filter;
+    private Details details;
 
     @Override
     public void create() {
@@ -95,10 +102,15 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
+        batch = new SpriteBatch();
+
         FetchApi fetch = new FetchApi();
         fetch.fetchBikes(this);
         fetch.fetchBuses(this);
         fetch.fetchTrains(this);
+
+        details = new Details(batch);
+        filter = new Filter(batch, details);
     }
 
     @Override
@@ -128,6 +140,8 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+        details.dispose();
+        filter.dispose();
     }
 
     @Override
