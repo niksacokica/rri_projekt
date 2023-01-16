@@ -1,6 +1,8 @@
 package com.projekt.map;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.io.ByteArrayOutputStream;
@@ -9,10 +11,10 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class MapRasterTiles {
-    static String mapServiceUrl = "https://api.mapbox.com/v4/";
-    static String token = "?access_token=" + "pk.eyJ1Ijoibmlrc2Fjb2tpY2EiLCJhIjoiY2wzaG45bzN1MWRqcTNjcHZrYWE1dXI0byJ9._Le5q5qRLj7ZhiW27l2Yiw";
-    static String tilesetId = "mapbox.satellite";
-    static String format = "@2x.jpg90";
+    static String mapServiceUrl = "https://maps.geoapify.com/v1/tile/";
+    static String token = "?&apiKey=" + "2341e61798e94b2ab3ac8fefe11f18ec";
+    static String tilesetId = "positron";
+    static String format = "@2x.png";
 
     final static public int TILE_SIZE = 512;
 
@@ -49,7 +51,13 @@ public class MapRasterTiles {
         }
 
         for (int i = 0; i < size * size; i++) {
-            array[i] = getRasterTile(zoomXY.zoom, zoomXY.x + factorX[i], zoomXY.y + factorY[i]);
+            FileHandle file = new FileHandle("tiles/"+(zoomXY.x + factorX[i])+"_"+(zoomXY.y + factorY[i])+".png");
+            if(file.exists())
+                array[i] = new Texture(file);
+            else{
+                array[i] = getRasterTile(zoomXY.zoom, zoomXY.x + factorX[i], zoomXY.y + factorY[i]);
+                PixmapIO.writePNG(file, array[i].getTextureData().consumePixmap());
+            }
             System.out.println(zoomXY.zoom + "/" + (zoomXY.x + factorX[i]) + "/" + (zoomXY.y + factorY[i]));
         }
         return array;
