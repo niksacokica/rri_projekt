@@ -15,6 +15,6 @@ public class BusStop {
     }
 
     public void draw(SpriteBatch batch, PixelPosition marker, Texture image, float zoom) {
-        batch.draw(image, marker.x-image.getWidth()*zoom*0.5f, marker.y-image.getHeight()*zoom*0.5f, image.getWidth()*zoom, image.getHeight()*zoom);
+        batch.draw(image, marker.x-image.getWidth()*zoom*0.25f, marker.y-image.getHeight()*zoom*0.25f, image.getWidth()*zoom*0.5f, image.getHeight()*zoom*0.5f);
     }
 }

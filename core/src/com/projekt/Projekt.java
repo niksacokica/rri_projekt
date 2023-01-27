@@ -321,6 +321,6 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
             }
         }
 
-        return dist * camera.zoom > 9 ? new String[]{"", "-1"} :  new String[]{stop, String.valueOf(ind)};
+        return dist * camera.zoom > 6 ? new String[]{"", "-1"} :  new String[]{stop, String.valueOf(ind)};
     }
 }
