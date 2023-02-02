@@ -111,7 +111,7 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
         fetch.fetchTrains(this);
 
         details = new Details(batch);
-        filter = new Filter(batch, details);
+        filter = new Filter(this, batch, details);
     }
 
     @Override
@@ -216,6 +216,26 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
 
     @Override
     public void pinchStop() {
+    }
+
+    public void selectByVoice(String sName) throws InterruptedException {
+        BusStop stop = null;
+
+        for(BusStop bStop : busStops) {
+            if(bStop.name.toLowerCase().contains(sName.toLowerCase())) {
+                stop = bStop;
+                break;
+            }
+        }
+
+        if(stop != null) {
+            PixelPosition marker = MapRasterTiles.getPixelPosition(stop.location.lat, stop.location.lng, MapRasterTiles.TILE_SIZE, ZOOM, beginTile.x, beginTile.y, HEIGHT);
+            camera.position.x = marker.x;
+            camera.position.y = marker.y;
+
+            Thread.sleep(100);
+            details.showDetails(camera.project(new Vector3(marker.x, marker.y, 0)), stop.name, "");
+        }
     }
 
     private void handleInput() {
