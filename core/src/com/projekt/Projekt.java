@@ -156,6 +156,8 @@ public class Projekt extends ApplicationAdapter implements GestureDetector.Gestu
         details.draw(Gdx.graphics.getDeltaTime());
         filter.draw(Gdx.graphics.getDeltaTime());
 
+        filter.addTrafficText("Light Traffic");
+
         handleInput();
     }
 

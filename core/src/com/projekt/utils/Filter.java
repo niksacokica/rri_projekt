@@ -5,18 +5,22 @@ import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projekt.Projekt;
@@ -67,6 +71,8 @@ public class Filter {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.GRAY);
         renderer.rect(0, 0, viewport.getWorldWidth()*0.16f, viewport.getWorldWidth()*0.16f);
+        renderer.setColor(Color.ORANGE);
+        renderer.rect(viewport.getWorldWidth()*0.35f, viewport.getWorldWidth()*0.9f, viewport.getWorldWidth()*0.3f, viewport.getWorldWidth()*0.1f);
         renderer.end();
 
         stage.act(delta);
@@ -79,6 +85,29 @@ public class Filter {
         this.renderer.dispose();
         this.micImage.dispose();
         this.recorder.dispose();
+    }
+
+    public void addTrafficText(String text) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("default.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.genMipMaps = true;
+        parameter.size = 32;
+        parameter.magFilter = Texture.TextureFilter.MipMapLinearLinear;
+        parameter.minFilter = Texture.TextureFilter.MipMapLinearLinear;
+
+        BitmapFont font = generator.generateFont(parameter);
+        font.setColor(Color.BLACK);
+
+        Label.LabelStyle ls = new Label.LabelStyle();
+        ls.font = font;
+        ls.fontColor = Color.BLACK;
+
+        Label traffic = new Label(text, ls);
+        traffic.setWidth(viewport.getWorldWidth()*0.3f);
+        traffic.setPosition(viewport.getWorldWidth()*0.35f, viewport.getWorldWidth()*0.93f);
+        traffic.setAlignment(Align.center);
+
+        this.stage.addActor(traffic);
     }
 
     private Actor createButtons() {
